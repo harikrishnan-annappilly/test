@@ -116,7 +116,7 @@ def movie_add(request):
         name = request.POST.get("name")
         description = request.POST.get("description")
         genre = request.POST.get("genre")
-        rating = request.POST.get("rating")
+        rating = 0
         year = request.POST.get("year")
         movie = Tbl_Movie(name=name, description=description, genre=genre, rating=rating, year=year)
         movie.save()
