@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block document_title %}{{movie.name}} | RateMyShow{% endblock %}
+
+{% block base_content_section %}
+
+<div class="container mt-5">
+    <div class="row">
+        <!-- Movie Poster Column -->
+        <div class="col-md-4 mb-4">
+            <img class="img-fluid rounded shadow-lg" src="https://picsum.photos/600/900?random={{movie.id}}"
+                alt="{{movie.name}}">
+        </div>
+
+        <!-- Movie Details Column -->
+        <div class="col-md-8">
+            <h1 class="display-4 text-accent fw-bold">{{movie.name}} <span
+                    class="text-secondary h3">({{movie.year}})</span></h1>
+
+            <div class="mb-3">
+                <span class="badge bg-warning text-dark fs-6">{{movie.rating}} / 10</span>
+                <span class="badge bg-secondary fs-6 ms-2">{{movie.genre}}</span>
+            </div>
+
+            <p class="lead">{{movie.description}}</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor
+                incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+                exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+
+            <div class="mt-4">
+                <h3 class="border-bottom pb-2 mb-3">Reviews</h3>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="text-muted">{{ratings|length}} Reviews</h5>
+                    <a href="/review_add?movie_id={{movie.id}}" class="btn btn-primary">{{rate_button_text}}</a>
+                </div>
+
+                {% if ratings %}
+                <div class="list-group">
+                    {% for review in ratings %}
+                    <div
+                        class="list-group-item list-group-item-action bg-dark text-light border-secondary flex-column align-items-start p-3 mb-2 rounded">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1 text-accent">{{review.user_id.username}}</h5>
+                            <small class="text-muted">{{review.created_at|date:"M d, Y"}}</small>
+                        </div>
+                        <div class="mb-2">
+                            <span class="badge bg-warning text-dark">{{review.rating}}/5</span>
+                        </div>
+                        <p class="mb-1">{{review.comment}}</p>
+
+                        {% if logged_user.id == review.user_id.id %}
+                        <div class="mt-2">
+                            <small>
+                                <a href="/review_delete?review_id={{review.id}}&movie_id={{movie.id}}"
+                                    class="text-danger text-decoration-none"
+                                    onclick="return confirm('Delete this review?')">Delete</a>
+                            </small>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="alert alert-secondary">No reviews yet. Be the first to review!</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

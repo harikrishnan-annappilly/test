@@ -1,0 +1,37 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+    <div class="container">
+        <a class="navbar-brand" href="/">RateMyShow</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+            aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav me-auto mb-2 mb-md-0">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="/">Home</a>
+                </li>
+                {% if logged_user %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/movies">Movies</a>
+                </li>
+                {% if logged_user.role == 'admin' %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/movie_add">Add Movie</a>
+                </li>
+                {% endif %}
+                {% endif %}
+            </ul>
+            <div class="d-flex align-items-center">
+                {% if logged_user %}
+                <span class="navbar-text me-3">
+                    Welcome, <span class="text-accent">{{logged_user.username}}</span>
+                </span>
+                <a href="/user_logout" class="btn btn-outline-warning btn-sm">Logout</a>
+                {% else %}
+                <a href="/user_login" class="btn btn-outline-light btn-sm me-2">Login</a>
+                <a href="/user_register" class="btn btn-warning btn-sm">Register</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>

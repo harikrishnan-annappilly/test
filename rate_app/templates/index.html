@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block document_title %}Home | RateMyShow{% endblock %}
+
+{% block base_content_section %}
+
+<div class="px-4 py-5 my-5 text-center">
+    <!-- Optional: Add a hero image here if available -->
+    <!-- <img class="d-block mx-auto mb-4" src="..." alt="" width="72" height="57"> -->
+    <h1 class="display-5 fw-bold text-accent">Rate My Show</h1>
+    <div class="col-lg-6 mx-auto">
+        <p class="lead mb-4">Discover, Rate, and Review your favorite movies. Join our community of movie enthusiasts
+            and share your thoughts on the latest blockbusters and hidden gems.</p>
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+            {% if logged_user %}
+            <a href="/movies" class="btn btn-primary btn-lg px-4 gap-3">Browse Movies</a>
+            {% else %}
+            <a href="/user_register" class="btn btn-warning btn-lg px-4 gap-3">Get Started</a>
+            <a href="/user_login" class="btn btn-outline-light btn-lg px-4">Login</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

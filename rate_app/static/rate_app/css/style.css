@@ -1,0 +1,153 @@
+:root {
+    --primary-bg: #121212;
+    --secondary-bg: #1f1f1f;
+    --text-color: #e0e0e0;
+    --accent-color: #f5c518;
+    /* IMDb-like yellow */
+    --accent-hover: #e2b616;
+    --card-bg: #2a2a2a;
+    --border-color: #333;
+}
+
+body {
+    background-color: var(--primary-bg);
+    color: var(--text-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Navbar */
+.navbar {
+    background-color: var(--secondary-bg) !important;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.navbar-brand {
+    color: var(--accent-color) !important;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.nav-link {
+    color: var(--text-color) !important;
+    transition: color 0.3s;
+}
+
+.nav-link:hover {
+    color: var(--accent-color) !important;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--accent-color);
+    color: #000;
+    border: none;
+    font-weight: 600;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+    background-color: var(--accent-hover);
+    color: #000;
+}
+
+.btn-outline-light {
+    border-color: var(--text-color);
+    color: var(--text-color);
+}
+
+.btn-outline-light:hover {
+    background-color: var(--text-color);
+    color: var(--primary-bg);
+}
+
+/* Cards */
+.card {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    box-shadow: 0 4px 15px rgba(245, 197, 24, 0.5);
+    border-color: var(--accent-color);
+}
+
+.card-title {
+    color: var(--accent-color);
+}
+
+.card-text {
+    color: #ccc;
+}
+
+/* Forms */
+.form-control {
+    background-color: #333;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+}
+
+.form-control:focus {
+    background-color: #444;
+    color: var(--text-color);
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 0.25rem rgba(245, 197, 24, 0.25);
+}
+
+.form-label {
+    color: var(--accent-color);
+}
+
+/* Tables */
+.table {
+    color: var(--text-color);
+}
+
+.table-striped>tbody>tr:nth-of-type(odd)>* {
+    color: var(--text-color);
+    background-color: var(--secondary-bg);
+}
+
+.table-striped>tbody>tr:nth-of-type(even)>* {
+    color: var(--text-color);
+    background-color: var(--primary-bg);
+}
+
+/* Jumbotron / Hero */
+.jumbotron {
+    background-color: var(--secondary-bg);
+    padding: 2rem;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border-color);
+}
+
+/* Footer */
+footer {
+    background-color: var(--secondary-bg);
+    padding: 2rem 0;
+    margin-top: 3rem;
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+    color: #888;
+}
+
+/* Alerts */
+.alert-success {
+    background-color: #155724;
+    color: #d4edda;
+    border-color: #c3e6cb;
+}
+
+.alert-danger {
+    background-color: #721c24;
+    color: #f8d7da;
+    border-color: #f5c6cb;
+}
+
+/* Utility */
+.text-accent {
+    color: var(--accent-color);
+}

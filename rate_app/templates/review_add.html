@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block document_title %}Add Review | RateMyShow{% endblock %}
+
+{% block base_content_section %}
+<div class="container d-flex justify-content-center align-items-center my-5">
+    <div class="card shadow-lg p-4" style="width: 100%; max-width: 500px;">
+        <div class="card-body">
+            <h3 class="card-title text-center mb-4 text-accent">Write a Review</h3>
+
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="movie_id" value="{{movie.id}}">
+
+                <div class="mb-3 text-center">
+                    <h5>For: <span class="text-white">{{movie.name}}</span></h5>
+                </div>
+
+                <div class="mb-3">
+                    <label for="rating" class="form-label">Your Rating (1-5)</label>
+                    <div class="d-flex justify-content-between px-3">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="rating" id="rating1" value="1" required>
+                            <label class="form-check-label" for="rating1">1</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="rating" id="rating2" value="2">
+                            <label class="form-check-label" for="rating2">2</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="rating" id="rating3" value="3">
+                            <label class="form-check-label" for="rating3">3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="rating" id="rating4" value="4">
+                            <label class="form-check-label" for="rating4">4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="rating" id="rating5" value="5">
+                            <label class="form-check-label" for="rating5">5</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="comment" class="form-label">Review</label>
+                    <textarea class="form-control" name="comment" id="comment" rows="5"
+                        placeholder="Share your thoughts on this movie..." required>{{review.comment}}</textarea>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Submit Review</button>
+                    <a href="/movie_show_one?movie_id={{movie.id}}" class="btn btn-outline-light">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
