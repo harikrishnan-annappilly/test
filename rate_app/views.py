@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password, check_password
 from .models import Tbl_User, Tbl_Movie, Tbl_Rating
+from .utilities import get_star_rating
 
 
 # Create your views here.
@@ -87,7 +88,6 @@ def movie_show_one(request):
         "ratings": ratings,
         "ratings_count": len(ratings),
         "rate_button_text": "Write a Review" if not current_user_rating else "Update My Review",
-        "average_rating": average_rating,
         "logged_user": user,
     }
     if not movie:
@@ -138,8 +138,8 @@ def review_add(request):
     review = Tbl_Rating.objects.filter(user_id=user, movie_id=movie).first()
 
     if request.method == "POST":
-        rating = request.POST.get("rating")
         comment = request.POST.get("comment")
+        rating = get_star_rating(comment)
         if review:
             review.rating = rating
             review.comment = comment

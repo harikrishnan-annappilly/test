@@ -23,5 +23,5 @@ class Tbl_Rating(models.Model):
     id = models.IntegerField(primary_key=True)
     user_id = models.ForeignKey(Tbl_User, on_delete=models.CASCADE)
     movie_id = models.ForeignKey(Tbl_Movie, on_delete=models.CASCADE)
-    rating = models.FloatField()
+    rating = models.IntegerField()
     comment = models.CharField(max_length=100)
