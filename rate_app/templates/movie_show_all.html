@@ -6,7 +6,7 @@
 <div class="container mt-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="text-accent border-start border-4 border-warning ps-3">Movies List</h2>
-        {% if logged_user.role == 'admin' %}
+        {% if logged_user.role == 'admin' or logged_user.role == 'moderator' and logged_user.allowed %}
         <a href="/movie_add" class="btn btn-success">+ Add New Movie</a>
         {% endif %}
     </div>
@@ -36,7 +36,7 @@
                         <a href="/movie_show_one?movie_id={{movie.id}}" class="btn btn-outline-light btn-sm">View
                             Details</a>
 
-                        {% if logged_user.role == 'admin' %}
+                        {% if logged_user.role == 'admin' or logged_user.role == 'moderator' and logged_user.allowed %}
                         <div class="d-flex gap-2">
                             <!-- TODO: Add Edit Link -->
                             <a href="#" class="btn btn-dark btn-sm flex-grow-1 disabled">Edit</a>

@@ -14,9 +14,14 @@
                 <li class="nav-item">
                     <a class="nav-link" href="/movies">Movies</a>
                 </li>
-                {% if logged_user.role == 'admin' %}
+                {% if logged_user.role == 'admin' or logged_user.role == 'moderator' and logged_user.allowed %}
                 <li class="nav-item">
                     <a class="nav-link" href="/movie_add">Add Movie</a>
+                </li>
+                {% endif %}
+                {% if logged_user.role == 'admin'%}
+                <li class="nav-item">
+                    <a class="nav-link" href="/user_show_all">User Management</a>
                 </li>
                 {% endif %}
                 {% endif %}
@@ -24,7 +29,11 @@
             <div class="d-flex align-items-center">
                 {% if logged_user %}
                 <span class="navbar-text me-3">
-                    Welcome, <span class="text-accent">{{logged_user.username}}</span>
+                    Welcome, <span class="text-accent">{{logged_user.username}} ({{logged_user.role}})
+                        {% if logged_user.role == 'admin' or logged_user.role == 'moderator' and logged_user.allowed %}
+                        <i class="fa-solid fa-circle-check"></i>
+                        {% endif %}
+                    </span>
                 </span>
                 <a href="/user_logout" class="btn btn-outline-warning btn-sm">Logout</a>
                 {% else %}

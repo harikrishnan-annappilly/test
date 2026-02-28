@@ -6,10 +6,22 @@ from .utilities import get_star_rating
 
 # Create your views here.
 def index(request):
+    admin_user = Tbl_User.objects.filter(role="admin").first()
+    if not admin_user:
+        admin_user = Tbl_User(
+            username="admin",
+            password=make_password("admin"),
+            role="admin",
+            allowed=True,
+        )
+        admin_user.save()
+
     user_id = request.session.get("user_id")
     context = {}
     if user_id:
-        user = Tbl_User.objects.get(id=user_id)
+        user = Tbl_User.objects.filter(id=user_id).first()
+        if not user:  # safetly, if manually deleted logged in user from db
+            user_logout(request)
         context["logged_user"] = user
     else:
         context["logged_user"] = None
@@ -51,6 +63,63 @@ def user_logout(request):
     del request.session["user_name"]
     del request.session["user_role"]
     return redirect("index")
+
+
+def user_show_all(request):
+    user_id = request.session.get("user_id")
+    user = Tbl_User.objects.filter(id=user_id).first()
+    if not user:
+        return redirect("user_login")
+    if user.role != "admin":
+        return redirect("/")
+
+    users = Tbl_User.objects.exclude(role="admin").all()
+    context = {"users": users, "logged_user": user}
+    return render(request, "user_show_all.html", context)
+
+
+def user_delete(request):
+    user_id = request.session.get("user_id")
+    user = Tbl_User.objects.filter(id=user_id).first()
+    if not user:
+        return redirect("user_login")
+    if user.role != "admin":
+        return redirect("/")
+
+    user_id = request.GET.get("user_id")
+    user = Tbl_User.objects.filter(id=user_id).first()
+    user.delete()
+    return redirect("/user_show_all")
+
+
+def user_switch_operations(request):
+    user_id = request.session.get("user_id")
+    user = Tbl_User.objects.filter(id=user_id).first()
+    if not user:
+        return redirect("user_login")
+    if user.role != "admin":
+        return redirect("/")
+
+    user_id = request.GET.get("user_id")
+    user = Tbl_User.objects.filter(id=user_id).first()
+    user.allowed = not user.allowed
+    user.save()
+    return redirect("/user_show_all")
+
+
+def user_switch_role(request):
+    logged_user_id = request.session.get("user_id")
+    user = Tbl_User.objects.filter(id=logged_user_id).first()
+    if not user:
+        return redirect("user_login")
+    if user.role != "admin":
+        return redirect("/")
+
+    user_id = request.GET.get("user_id")
+    user = Tbl_User.objects.filter(id=user_id).first()
+    user.role = "user" if user.role != "user" else "moderator"
+    user.save()
+    return redirect("/user_show_all")
 
 
 # movie section

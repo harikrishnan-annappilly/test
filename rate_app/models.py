@@ -8,6 +8,7 @@ class Tbl_User(models.Model):
     username = models.CharField(max_length=50, unique=True)
     password = models.CharField(max_length=50)
     role = models.CharField(max_length=20)
+    allowed = models.BooleanField(default=False)
 
 
 class Tbl_Movie(models.Model):
