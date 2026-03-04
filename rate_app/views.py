@@ -1,7 +1,8 @@
+import random
 from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password, check_password
 from .models import Tbl_User, Tbl_Movie, Tbl_Rating
-from .utilities import get_star_rating
+from .utilities import get_star_rating, send_otp
 
 
 # Create your views here.
@@ -10,6 +11,7 @@ def index(request):
     if not admin_user:
         admin_user = Tbl_User(
             username="admin",
+            email="waytoalameen8802@gmail.com",
             password=make_password("admin"),
             role="admin",
             allowed=True,
@@ -31,11 +33,12 @@ def index(request):
 def user_register(request):
     if request.method == "POST":
         username = request.POST.get("username")
+        email = request.POST.get("email")
         password = make_password(request.POST.get("password"))
         role = request.POST.get("role")
         if Tbl_User.objects.filter(username=username).exists():
             return render(request, "user_register.html", {"message": "User already exists"})
-        user = Tbl_User(username=username, password=password, role=role)
+        user = Tbl_User(username=username, email=email, password=password, role=role)
         user.save()
         return render(request, "user_register.html", {"message": f"User {username} registered successfully"})
     return render(request, "user_register.html")
@@ -122,6 +125,38 @@ def user_switch_role(request):
     return redirect("/user_show_all")
 
 
+def user_verify(request):
+    user_id = request.session.get("user_id")
+    user = Tbl_User.objects.filter(id=user_id).first()
+    if not user:
+        return redirect("user_login")
+    message = request.GET.get("message")
+    context = {"logged_user": user, "message": message}
+    if request.method == "POST":
+        entered_otp = request.POST.get("otp")
+        send_otp = request.session.get("user_otp")
+        if str(entered_otp) == str(send_otp):
+            context["message"] = "Verified: Status updated"
+            user.allowed = True
+            user.save()
+        else:
+            context["message"] = None
+            context["error_message"] = "Failed to verify"
+    return render(request, "user_verify.html", context)
+
+
+def user_send_otp(request):
+    user_id = request.session.get("user_id")
+    user = Tbl_User.objects.filter(id=user_id).first()
+    if not user:
+        return redirect("user_login")
+    otp_number = random.randint(1000, 9999)
+    request.session["user_otp"] = otp_number
+    send_otp(otp_number, "waytoalameen8802@gmail.com")  # Just to check the OTP
+    send_otp(otp_number, user.email)
+    return redirect("/user_verify?message=OTP send")
+
+
 # movie section
 def movie_show_all(request):
     user_id = request.session.get("user_id")
@@ -130,8 +165,8 @@ def movie_show_all(request):
         return redirect("user_login")
 
     movies = Tbl_Movie.objects.all()
-    message = request.GET.get("message")
     context = {"movies": movies, "logged_user": user}
+    message = request.GET.get("message")
     if message:
         context["message"] = message
     return render(request, "movie_show_all.html", context)
@@ -145,7 +180,7 @@ def movie_show_one(request):
 
     movie_id = request.GET.get("movie_id")
     movie = Tbl_Movie.objects.filter(id=movie_id).first()
-    ratings = Tbl_Rating.objects.filter(movie_id=movie)
+    ratings = Tbl_Rating.objects.filter(movie_id=movie).all()
     average_rating = round(sum([rating.rating for rating in ratings]) / len(ratings), 1) if ratings else "#NA"
     if movie:
         movie.rating = average_rating if average_rating != "#NA" else 0
@@ -180,6 +215,8 @@ def movie_add(request):
     user = Tbl_User.objects.filter(id=user_id).first()
     if not user:
         return redirect("user_login")
+    if not user.allowed:
+        return redirect("/")
 
     if request.method == "POST":
         name = request.POST.get("name")
@@ -220,11 +257,7 @@ def review_add(request):
     context = {"logged_user": user, "movie": movie}
     if review:
         context["review"] = review
-    return render(
-        request,
-        "review_add.html",
-        context,
-    )
+    return render(request, "review_add.html", context)
 
 
 def review_delete(request):

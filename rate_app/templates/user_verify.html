@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block document_title %}Verify | RateMyShow{% endblock %}
+
+{% block base_content_section %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="card shadow-lg p-4" style="width: 100%; max-width: 400px;">
+        <div class="card-body">
+            <h3 class="card-title text-center mb-4">OTP Verify</h3>
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="otp" class="form-label">OTP</label>
+                    <input type="text" class="form-control" name="otp" id="otp"
+                        placeholder="Enter your OTP" required />
+                </div>
+                <div class="mb-3">
+                    Click <a href="/user_send_otp">here</a> to send OTP
+                </div>
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Verify</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

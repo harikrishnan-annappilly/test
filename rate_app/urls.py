@@ -10,6 +10,8 @@ urlpatterns = [
     path("user_delete/", views.user_delete, name="user_delete"),
     path("user_switch_operations/", views.user_switch_operations, name="user_switch_operations"),
     path("user_switch_role/", views.user_switch_role, name="user_switch_role"),
+    path("user_verify/", views.user_verify, name="user_verify"),
+    path("user_send_otp/", views.user_send_otp, name="user_send_otp"),
     # movies section
     path("movies/", views.movie_show_all, name="movie_show_all"),
     path("movie_show_one/", views.movie_show_one, name="movie_one"),
